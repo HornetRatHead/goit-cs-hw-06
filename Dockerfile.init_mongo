@@ -1,0 +1,17 @@
+# Використовуємо Python 3.9 як базовий образ
+FROM python:3.9-slim
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо файл залежностей (requirements.txt)
+COPY requirements.txt .
+
+# Встановлюємо залежності
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копіюємо всі файли до контейнера
+COPY . .
+
+# Запуск ініціалізації MongoDB
+CMD ["python", "init_mongo.py"]

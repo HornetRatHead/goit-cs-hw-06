@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: hw06_user
+      MONGO_INITDB_ROOT_PASSWORD: pass_hw06
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  init_mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile.init_mongo  # Використовуємо Dockerfile для ініціалізації
+    depends_on:
+      - mongo  # Залежить від сервісу MongoDB
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Ваш основний Dockerfile для веб-сервера
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo  # Залежить від сервісу MongoDB
+
+volumes:
+  mongo-data:/data/db
